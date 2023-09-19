@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp"
+    tools:context="activity.MainActivity">
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="150dp"
+        android:text="출근"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:textSize="25sp" />
+
+    <Button
+        android:id="@+id/endButton"
+        android:layout_width="350dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/startButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="퇴근"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="30sp" />
+    <TextView
+        android:id="@+id/greetingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/endButton"
+        android:textSize="18sp"
+        android:textColor="#000000"
+        android:visibility="gone" />
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/greetingText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="로그인"
+        android:background="@null"
+        android:textColor="@android:color/darker_gray" />
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/greetingText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:text="로그아웃"
+        android:background="@null"
+        android:textColor="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:text="회원가입"
+        android:background="@null"
+        android:textColor="@android:color/darker_gray" />
+
+</RelativeLayout>

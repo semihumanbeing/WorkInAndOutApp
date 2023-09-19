@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/activity_sign_up.xml -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:padding="16dp"
+    tools:context="activity.SignUpActivity">
+
+    <EditText
+        android:id="@+id/idEditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="다우오피스 아이디 (필수)"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginTop="16dp"
+        android:padding="5dp"
+        android:layout_marginBottom="5dp"/>
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="다우오피스 비밀번호 (필수)"
+        android:inputType="textPassword"
+        android:layout_below="@+id/idEditText"
+        android:background="@drawable/edit_text_border"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"/>
+
+   <!-- <EditText
+        android:id="@+id/faceImageEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="얼굴 사진 URL"
+        android:layout_below="@+id/passwordEditText"
+        android:layout_marginBottom="16dp"/>-->
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordEditText"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#FF0000"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="회원가입"
+        android:background="@drawable/rounded_button"
+        android:layout_below="@+id/errorTextView"/>
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="취소"
+        android:background="@drawable/rounded_button"
+        android:layout_below="@+id/signUpButton"/>
+
+
+
+</RelativeLayout>
