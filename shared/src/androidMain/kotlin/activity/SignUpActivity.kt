@@ -1,5 +1,6 @@
 package activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,8 +9,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.workinandoutapplication.R
 import dto.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import network.NetworkClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,6 +26,9 @@ import service.ApiService
 class SignUpActivity : AppCompatActivity() {
 
     private val apiService = NetworkClient.createService(ApiService::class.java)
+    val LOGINPREFS = "LoginCookiePrefs"
+    val STATUSPREFS = "StatusPrefs"
+    val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +63,9 @@ class SignUpActivity : AppCompatActivity() {
 
                 // 서버로 회원가입 요청 보내기
                 sendSignUpRequest(user)
+                showToast("가입 완료")
+                showToast("다우오피스 동기화를 시작합니다.")
+                syncStatus(id)
             }
         }
 
@@ -64,23 +75,56 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun sendSignUpRequest(user: User) {
-        val call = apiService.registerUser(user)
-        call.enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                if(response.isSuccessful) {
-                    showToast("가입 완료")
-                    startActivity(Intent(this@SignUpActivity, SignInActivity::class.java))
-                } else {
-                    val res: String = response.message()
-                    showToast("가입 실패 $res")
+        coroutineScope.launch {
+            val call = apiService.registerUser(user)
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if(response.isSuccessful) {
+                        startActivity(Intent(this@SignUpActivity, SignInActivity::class.java))
+                    } else {
+                        val res: String = response.message()
+                        showToast("가입 실패 $res")
+                    }
                 }
-            }
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                showToast("완전 실패")
-            }
-        })
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    showToast("완전 실패")
+                }
+            })
+        }
+
     }
     private fun showToast(message: String) {
         Toast.makeText(this@SignUpActivity, message, Toast.LENGTH_SHORT).show()
+    }
+    private fun syncStatus(userId: String) {
+        coroutineScope.launch {
+            val sharedPreferences = getSharedPreferences("STATUSPREFS", Context.MODE_PRIVATE)
+
+            if (userId.isEmpty()) return@launch
+            val call = apiService.syncStatus(User(userId, ""))
+            call.enqueue(object : Callback<Map<String, Boolean>> {
+                override fun onResponse(
+                    call: Call<Map<String, Boolean>>,
+                    response: Response<Map<String, Boolean>>
+                ) {
+                    if (response.isSuccessful) {
+                        val map = response.body()
+                        val inValue = map?.get("in")
+                        val outValue = map?.get("out")
+
+                        val editor = sharedPreferences.edit()
+                        inValue?.let { editor.putBoolean("workInClicked", it) }
+                        outValue?.let { editor.putBoolean("workOutClicked", it) }
+                        editor.apply()
+                    }
+                }
+
+                override fun onFailure(call: Call<Map<String, Boolean>>, t: Throwable) {
+                    println("불러오기 실패  ${t.message}")
+                }
+
+            })
+        }
+
     }
 }

@@ -11,15 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.workinandoutapplication.R
 import dto.User
-import network.AndroidCookieHandler
 import network.NetworkClient
-import okhttp3.Cookie
-import okhttp3.HttpUrl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import service.ApiService
-import kotlin.jvm.optionals.getOrNull
 
 class SignInActivity : AppCompatActivity() {
 

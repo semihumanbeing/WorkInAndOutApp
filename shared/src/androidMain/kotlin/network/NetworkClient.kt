@@ -1,12 +1,11 @@
 package network
 
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.JavaNetCookieJar
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.CookieManager
+import java.util.concurrent.TimeUnit
 
 class NetworkClient {
     companion object {
@@ -15,6 +14,7 @@ class NetworkClient {
             val builder = OkHttpClient().newBuilder()
             val okHttpClient = builder
                 .cookieJar(JavaNetCookieJar(CookieManager()))
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
             val retrofit = Retrofit.Builder()
@@ -24,10 +24,6 @@ class NetworkClient {
                 .build()
 
             return retrofit.create(api)
-        }
-
-        fun getBaseUrl(): HttpUrl {
-            return BASE_URL.replace("api/", "").toHttpUrl()
         }
     }
 
