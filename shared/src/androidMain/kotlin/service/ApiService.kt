@@ -15,9 +15,9 @@ interface ApiService {
     fun loginUser(@Body user: User): Call<Void>
 
     @POST("work-in")
-    fun workIn(@Body user: User): Call<String>
+    fun workIn(@Body user: User): Call<Map<String, Boolean>>
     @POST("work-out")
-    fun workOut(@Body user: User): Call<String>
+    fun workOut(@Body user: User): Call<Map<String, Boolean>>
     @POST("sync-status")
     fun syncStatus(@Body user: User): Call<Map<String, Boolean>>
 }

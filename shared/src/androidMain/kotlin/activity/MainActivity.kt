@@ -95,21 +95,29 @@ class MainActivity : ComponentActivity() {
             showToast("이미 출근 되어 있습니다")
 
         } else { // 로그인 되고 출근처리 안됐으면
+            startButton.setBackgroundColor(
+                ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray))
             val call = apiService.workIn(User(id, ""))
-            call.enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    showToast("출근 성공")
-                    val statusEditor = statusPrefs.edit()
-                    statusEditor.putBoolean("workInClicked", true)
-                    statusEditor.apply()
-                    startButton.setBackgroundColor(
-                        ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray))
-                    startButton.isEnabled = false
-                    syncStatus(id)
+            call.enqueue(object : Callback<Map<String, Boolean>> {
+                override fun onResponse(call: Call<Map<String,Boolean>>, response: Response<Map<String, Boolean>>) {
+                    if(response.isSuccessful){
+                        val statusEditor = statusPrefs.edit()
+                        val map = response.body()
+                        val result = map?.get("result")!!
+                        statusEditor.putBoolean("workInClicked", result)
+                        statusEditor.apply()
+                        startButton.setBackgroundColor(
+                            ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray))
+                        startButton.isEnabled = false
+                        showToast("출근 성공")
+                    }
                 }
-                override fun onFailure(call: Call<String>, t: Throwable) {
+
+                override fun onFailure(call: Call<Map<String, Boolean>>, t: Throwable) {
                     showToast("출근 실패")
+                    startButton.setBackgroundResource(R.drawable.rounded_button)
                 }
+
             })
         }
     }
@@ -131,20 +139,25 @@ class MainActivity : ComponentActivity() {
 
         } else { // 로그인 되고 퇴근처리 안됐으면
             val call = apiService.workOut(User(id, ""))
-            call.enqueue(object : Callback<String> {
-                override fun onResponse(call: Call<String>, response: Response<String>) {
-                    showToast("퇴근 성공")
-                    val statusEditor = statusPrefs.edit()
-                    statusEditor.putBoolean("workInClicked", true)
-                    statusEditor.apply()
-                    endButton.setBackgroundColor(
-                        ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray))
-                    endButton.isEnabled = false
-                    syncStatus(id)
+            call.enqueue(object : Callback<Map<String, Boolean>> {
+                override fun onResponse(call: Call<Map<String,Boolean>>, response: Response<Map<String, Boolean>>) {
+                    if(response.isSuccessful){
+                        val statusEditor = statusPrefs.edit()
+                        val map = response.body()
+                        val result = map?.get("result")!!
+                        statusEditor.putBoolean("workOutClicked", result)
+                        statusEditor.apply()
+                        showToast("퇴근 성공")
+                        endButton.setBackgroundColor(
+                            ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray))
+                        endButton.isEnabled = false
+                    }
                 }
-                override fun onFailure(call: Call<String>, t: Throwable) {
+
+                override fun onFailure(call: Call<Map<String, Boolean>>, t: Throwable) {
                     showToast("퇴근 실패")
                 }
+
             })
         }
     }
