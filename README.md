@@ -1,5 +1,8 @@
 # WorkInAndOutApp
-my very first kotlin multiplatform mobile application (he he)
+my very first kotlin multiplatform mobile application 
+
+![image](https://github.com/semihumanbeing/WorkInAndOutApp/assets/99929191/298e0aef-48ba-4a5a-836b-b92d7d7657c7)
+
 
 회사에 출퇴근 기록 관리를 위한 웹사이트가 있는데 <br>
 출퇴근 버튼 누르는 것을 웹사이트에서만 할 수 있는 점이 불편해서 시도한 개인적인 앱 프로젝트<br>
@@ -19,11 +22,10 @@ my very first kotlin multiplatform mobile application (he he)
   - 또한 윈도우 서버를 사용하고, 셀레니움으로 항상 화면이 조회되도록 처리해야한다.
  
 ---
-사실 결과적으로는 셀레니움의 호환성이 너무 떨어지고,
-랜덤으로 나오는 팝업들을 닫아 주어야 다음 화면으로 넘어가는 부분이 너무 불안정했다.
-출퇴근 기록 관리 웹사이트에서 가끔 클릭을 해도 다음날에 보면 출근 퇴근 클릭이 되어 있지 않은 적도 있었다.
-더 나은 원격 라이브러리를 찾아야 할 것 같다..
-그래도 코틀린을 아무것도 모르는 상태로 어플을 만들어보는 것은 재미있었다 
 
-
+트러블슈팅
+- 출근 버튼을 누르고 출근 처리가 되기까지 거의 10초의 시간이 소요되던 점
+- 그러나 출근이 완료되었는지 여부를 확인해서 앱에 결과를 보여주어야 했음
+- CompletableFuture를 사용해 나온 결과를 반환하게 하려고 했지만 너무 의존성이 높아지는 것 같았음
+- Stateless하게 만들고싶어 우선 결과를 반환하고 메인화면에서 결과가 반환되면 db를 조회해 화면에 반영되게 하였음
 
